@@ -1,0 +1,12 @@
+#server.port: 9292
+
+spring:
+  application.name: basic-prometheus-example
+  output.ansi.enabled: always
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - prometheus
