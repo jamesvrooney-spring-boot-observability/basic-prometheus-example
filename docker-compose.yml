@@ -1,25 +1,30 @@
 services:
   prometheus:
     image: prom/prometheus:v2.41.0
-    network_mode: host
+#    network_mode: host
+#    extra_hosts: ['host.docker.internal:host-gateway']
     container_name: prometheus
     restart: unless-stopped
     volumes:
       - ./data/prometheus/config:/etc/prometheus/
     command:
-      - "--config.file=/etc/prometheus/prometheus.yaml"
+      - --config.file=/etc/prometheus/prometheus.yml
     ports:
       - 9090:9090
+    networks:
+      - back-tier
 
   grafana:
     image: grafana/grafana-oss:8.5.16
     pull_policy: always
-    network_mode: host
+#    network_mode: host
     container_name: grafana
     restart: unless-stopped
     user: root
     ports:
       - 3000:3000 # access grafana url
+    networks:
+      - back-tier
     volumes:
       - ./data/grafana:/var/lib/grafana
     environment:
@@ -29,3 +34,14 @@ services:
       # Enabled for logging
       - GF_LOG_MODE=console file
       - GF_LOG_FILTERS=alerting.notifier.slack:debug alertmanager:debug ngalert:debug
+
+  demo:
+    image: basic-prometheus-example:0.0.1-SNAPSHOT
+    container_name: james-basic-prometheus-example
+    ports:
+      - 8080:8080
+    networks:
+      - back-tier
+
+networks:
+  back-tier:
