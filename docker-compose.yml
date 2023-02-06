@@ -14,29 +14,29 @@ services:
     networks:
       - back-tier
 
-  grafana:
-    image: grafana/grafana-oss:8.5.16
-    pull_policy: always
-#    network_mode: host
-    container_name: grafana
-    restart: unless-stopped
-    user: root
-    ports:
-      - 3000:3000 # access grafana url
-    networks:
-      - back-tier
-    volumes:
-      - ./data/grafana:/var/lib/grafana
-    environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin
-      - GF_USERS_ALLOW_SIGN_UP=false
-      - GF_SERVER_DOMAIN=localhost
-      # Enabled for logging
-      - GF_LOG_MODE=console file
-      - GF_LOG_FILTERS=alerting.notifier.slack:debug alertmanager:debug ngalert:debug
+#  grafana:
+#    image: grafana/grafana-oss:8.5.16
+#    pull_policy: always
+##    network_mode: host
+#    container_name: grafana
+#    restart: unless-stopped
+#    user: root
+#    ports:
+#      - 3000:3000 # access grafana url
+#    networks:
+#      - back-tier
+#    volumes:
+#      - ./data/grafana:/var/lib/grafana
+#    environment:
+#      - GF_SECURITY_ADMIN_PASSWORD=admin
+#      - GF_USERS_ALLOW_SIGN_UP=false
+#      - GF_SERVER_DOMAIN=localhost
+#      # Enabled for logging
+#      - GF_LOG_MODE=console file
+#      - GF_LOG_FILTERS=alerting.notifier.slack:debug alertmanager:debug ngalert:debug
 
   demo:
-    image: basic-prometheus-example:0.0.1-SNAPSHOT
+    image: james-spring-boot-demo:v0.1
     container_name: james-basic-prometheus-example
     ports:
       - 8080:8080
